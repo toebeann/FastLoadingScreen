@@ -1,0 +1,3 @@
+[submodule "BepInEx.Subnautica.Logger"]
+	path = BepInEx.Subnautica.Logger
+	url = https://github.com/tobeyStraitjacket/BepInEx.Subnautica.Logger
