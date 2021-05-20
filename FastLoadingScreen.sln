@@ -5,13 +5,23 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Straitjacket.Subnautica.Mods.FastLoadingScreen", "FastLoadingScreen\Straitjacket.Subnautica.Mods.FastLoadingScreen.csproj", "{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BepInEx.Subnautica.Logger", "BepInEx.Subnautica.Logger\Logger\BepInEx.Subnautica.Logger.shproj", "{32F6ED8C-0F9A-409D-A404-EE068789C72F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VirtualKey", "Straitjacket.VirtualKey\VirtualKey\VirtualKey.shproj", "{6FEABC43-6A6E-421E-B90C-FAE883F48A50}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		BepInEx.Subnautica.Logger\Logger\Logger.projitems*{07f0884a-ca28-4bf9-9b71-d759ffa09dc0}*SharedItemsImports = 4
+		Straitjacket.VirtualKey\VirtualKey\VirtualKey.projitems*{07f0884a-ca28-4bf9-9b71-d759ffa09dc0}*SharedItemsImports = 4
+		BepInEx.Subnautica.Logger\Logger\Logger.projitems*{32f6ed8c-0f9a-409d-a404-ee068789c72f}*SharedItemsImports = 13
+		Straitjacket.VirtualKey\VirtualKey\VirtualKey.projitems*{6feabc43-6a6e-421e-b90c-fae883f48a50}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		SUBNAUTICA|Any CPU = SUBNAUTICA|Any CPU
+		BELOWZERO|Any CPU = BELOWZERO|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.SUBNAUTICA|Any CPU.ActiveCfg = SUBNAUTICA|Any CPU
-		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.SUBNAUTICA|Any CPU.Build.0 = SUBNAUTICA|Any CPU
+		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.BELOWZERO|Any CPU.ActiveCfg = BELOWZERO|Any CPU
+		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.BELOWZERO|Any CPU.Build.0 = BELOWZERO|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
