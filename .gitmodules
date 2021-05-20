@@ -1,3 +1,6 @@
 [submodule "BepInEx.Subnautica.Logger"]
 	path = BepInEx.Subnautica.Logger
 	url = https://github.com/tobeyStraitjacket/BepInEx.Subnautica.Logger
+[submodule "Straitjacket.VirtualKey"]
+	path = Straitjacket.VirtualKey
+	url = https://github.com/tobeyStraitjacket/Straitjacket.VirtualKey
