@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Straitjacket.Subnautica.Mods.FastLoadingScreen")]
-[assembly: AssemblyDescription("Boost your Subnautica: Below Zero loading times!")]
+[assembly: AssemblyDescription("Turboboost your Subnautica: Below Zero loading times!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Straitjacket Software")]
 [assembly: AssemblyProduct("FastLoadingScreen")]
