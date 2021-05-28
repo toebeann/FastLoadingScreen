@@ -18,10 +18,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		BELOWZERO|Any CPU = BELOWZERO|Any CPU
+		SUBNAUTICA|Any CPU = SUBNAUTICA|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.BELOWZERO|Any CPU.ActiveCfg = BELOWZERO|Any CPU
 		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.BELOWZERO|Any CPU.Build.0 = BELOWZERO|Any CPU
+		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.SUBNAUTICA|Any CPU.ActiveCfg = SUBNAUTICA|Any CPU
+		{07F0884A-CA28-4BF9-9B71-D759FFA09DC0}.SUBNAUTICA|Any CPU.Build.0 = SUBNAUTICA|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

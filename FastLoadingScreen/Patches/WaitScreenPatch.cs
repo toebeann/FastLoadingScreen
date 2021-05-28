@@ -45,7 +45,11 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
         {
             if (end is Coroutine)
             {
+#if SUBNAUTICA
+                CoroutineHost.main.StopCoroutine(end);
+#elif BELOWZERO
                 CoroutineHost.StopCoroutine(end);
+#endif
             }
 
             end = CoroutineHost.StartCoroutine(End());
@@ -86,6 +90,8 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
                     }
                 }
             }
+            stopwatch = null;
+            end = null;
         }
     }
 }

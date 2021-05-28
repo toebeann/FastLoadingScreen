@@ -1,0 +1,12 @@
+﻿{
+    "Id": "FastLoadingScreen",
+    "DisplayName": "Fast Loading Screen",
+    "Author": "Tobey Blaber",
+    "Version": "1.0",
+    "AssemblyName": "Straitjacket.Subnautica.Mods.FastLoadingScreen.dll",
+    "Enable": true,
+    "Game": "Subnautica",
+    "NexusId": {
+        "BelowZero": "171"
+    }
+}

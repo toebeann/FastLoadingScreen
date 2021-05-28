@@ -14,43 +14,64 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'BELOWZERO|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SUBNAUTICA|AnyCPU'">
+    <DebugSymbols>false</DebugSymbols>
     <OutputPath>..\Build\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;SUBNAUTICA</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GameDir>C:\Program Files (x86)\Steam\steamapps\common\Subnautica</GameDir>
+    <DataDir>$(GameDir)\Subnautica_Data</DataDir>
+    <ManagedDir>$(DataDir)\Managed</ManagedDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'BELOWZERO|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>..\Build\</OutputPath>
+    <DefineConstants>TRACE;BELOWZERO</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GameDir>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero</GameDir>
+    <DataDir>$(GameDir)\SubnauticaZero_Data</DataDir>
+    <ManagedDir>$(DataDir)\Managed</ManagedDir>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>$(GameDir)\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass_publicized">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\SubnauticaZero_Data\Managed\publicized_assemblies\Assembly-CSharp-firstpass_publicized.dll</HintPath>
+      <HintPath>$(ManagedDir)\publicized_assemblies\Assembly-CSharp-firstpass_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\SubnauticaZero_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>$(ManagedDir)\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(GameDir)\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="QModInstaller">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
+      <HintPath>$(GameDir)\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\SubnauticaZero_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\SubnauticaZero\SubnauticaZero_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -61,13 +82,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="mod.json" />
+    <None Include="mod_SUBNAUTICA.json" />
+    <None Include="mod_BELOWZERO.json" />
   </ItemGroup>
   <Import Project="..\BepInEx.Subnautica.Logger\Logger\Logger.projitems" Label="Shared" />
   <Import Project="..\Straitjacket.VirtualKey\VirtualKey\VirtualKey.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo f | xcopy "$(ProjectDir)mod.json" "$(TargetDir)$(SolutionName)\mod.json" /y
+    <PostBuildEvent>echo f | xcopy "$(ProjectDir)mod_$(ConfigurationName).json" "$(TargetDir)$(SolutionName)\mod.json" /y
 if exist "E:\Toadbomb\Documents\PowerShell Scripts\Subnautica Modding\post-build.ps1" powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "E:\Toadbomb\Documents\PowerShell Scripts\Subnautica Modding\post-build.ps1" -ProjectName $(SolutionName) -ConfigurationName $(ConfigurationName) -ProjectDir $(ProjectDir) -TargetDir $(TargetDir) -TargetPath $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
 </Project>
