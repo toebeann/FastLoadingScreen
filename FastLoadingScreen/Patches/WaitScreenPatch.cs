@@ -9,14 +9,16 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
 {
     internal static class WaitScreenPatch
     {
-        private static double benchmark = -1;
         private static int frameRate;
         private static int vSyncCount;
+
+        private static double benchmark = -1;
         private static Stopwatch stopwatch;
         private static bool benchmarking;
+
         [HarmonyPatch(typeof(WaitScreen), nameof(WaitScreen.Show))]
-        [HarmonyPostfix]
-        public static void ShowPostfix()
+        [HarmonyPrefix]
+        public static void ShowPrefix()
         {
             if (stopwatch is Stopwatch sw && sw.IsRunning)
                 return;
@@ -70,9 +72,10 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
             else
             {
                 Logger.LogInfo($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
-                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
+                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount}, {resolution})");
                 Application.targetFrameRate = frameRate;
                 QualitySettings.vSyncCount = vSyncCount;
+
                 if (benchmark >= 0)
                 {
                     Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, vs. unboosted benchmark of {benchmark:N2}s.");
