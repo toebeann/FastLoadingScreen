@@ -72,7 +72,7 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
             else
             {
                 Logger.LogInfo($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
-                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount}, {resolution})");
+                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
                 Application.targetFrameRate = frameRate;
                 QualitySettings.vSyncCount = vSyncCount;
 
