@@ -79,18 +79,13 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
                 if (benchmark >= 0)
                 {
                     Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, vs. unboosted benchmark of {benchmark:N2}s.");
-                    if (stopwatch.Elapsed.TotalSeconds < benchmark)
+
+                    Logger.LogMessage(stopwatch.Elapsed.TotalSeconds switch
                     {
-                        Logger.LogMessage($"Improvement of {benchmark - stopwatch.Elapsed.TotalSeconds:N2}s.");
-                    }
-                    else if (stopwatch.Elapsed.TotalSeconds > benchmark)
-                    {
-                        Logger.LogMessage($"Degradation of {stopwatch.Elapsed.TotalSeconds - benchmark:N2}s.");
-                    }
-                    else
-                    {
-                        Logger.LogMessage("No performance difference recorded.");
-                    }
+                        double seconds when seconds < benchmark => $"Improvement of {benchmark - stopwatch.Elapsed.TotalSeconds:N2}s.",
+                        double seconds when seconds > benchmark => $"Degradation of {stopwatch.Elapsed.TotalSeconds - benchmark:N2}s.",
+                        _ => "No performance difference recorded."
+                    });
                 }
             }
             stopwatch = null;
