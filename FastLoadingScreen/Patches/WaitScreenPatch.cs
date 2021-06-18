@@ -30,7 +30,7 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
             }
             else
             {
-                Logger.LogInfo("Boosting loading times...");
+                Logger.LogMessage("Boosting loading times...");
                 frameRate = Application.targetFrameRate;
                 Application.targetFrameRate = -1;
 
@@ -59,8 +59,7 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
 
         private static IEnumerator End()
         {
-            int frame = Time.frameCount;
-            yield return new WaitUntil(() => Time.frameCount > frame);
+            yield return null;
             yield return new WaitWhile(() => WaitScreen.main.isShown);
 
             stopwatch.Stop();
@@ -71,11 +70,6 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
             }
             else
             {
-                Logger.LogInfo($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
-                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
-                Application.targetFrameRate = frameRate;
-                QualitySettings.vSyncCount = vSyncCount;
-
                 if (benchmark >= 0)
                 {
                     Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, vs. unboosted benchmark of {benchmark:N2}s.");
@@ -86,6 +80,13 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen.Patches
                         double seconds when seconds > benchmark => $"Degradation of {stopwatch.Elapsed.TotalSeconds - benchmark:N2}s.",
                         _ => "No performance difference recorded."
                     });
+                }
+                else
+                {
+                    Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
+                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
+                    Application.targetFrameRate = frameRate;
+                    QualitySettings.vSyncCount = vSyncCount;
                 }
             }
             stopwatch = null;
