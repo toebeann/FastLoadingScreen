@@ -26,13 +26,13 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen
             Logger.LogInfo($"Initialising Fast Loading Screen for {Game} v{Assembly.GetExecutingAssembly().GetName().Version}...");
             var stopwatch = Stopwatch.StartNew();
 
-            ApplyHarmonyPathches();
+            ApplyHarmonyPatches();
 
             stopwatch.Stop();
             Logger.LogInfo($"Initialised in {stopwatch.ElapsedMilliseconds}ms.");
         }
 
-        private static void ApplyHarmonyPathches()
+        private static void ApplyHarmonyPatches()
         {
             var stopwatch = Stopwatch.StartNew();
 
