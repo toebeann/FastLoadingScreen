@@ -12,14 +12,22 @@ namespace Straitjacket.Subnautica.Mods.FastLoadingScreen
     [QModCore]
     public static class Main
     {
+        private const string Game
+#if SUBNAUTICA
+            = "Subnautica";
+#elif BELOWZERO
+            = "Below Zero";
+#endif
+
+
         [QModPatch, Obsolete("Should not be used!", true)]
         public static void Initialise()
         {
-            Logger.LogInfo($"Initialising Fast Loading Screen for BelowZero v{Assembly.GetExecutingAssembly().GetName().Version}...");
+            Logger.LogInfo($"Initialising Fast Loading Screen for {Game} v{Assembly.GetExecutingAssembly().GetName().Version}...");
             var stopwatch = Stopwatch.StartNew();
-            
+
             ApplyHarmonyPathches();
-            
+
             stopwatch.Stop();
             Logger.LogInfo($"Initialised in {stopwatch.ElapsedMilliseconds}ms.");
         }
