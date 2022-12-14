@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tobey.FastLoadingScreen", "Tobey.FastLoadingScreen\Tobey.FastLoadingScreen.csproj", "{CC314808-5293-446B-B125-4B57A1DC9BB1}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VirtualKey", "Straitjacket.VirtualKey\VirtualKey\VirtualKey.shproj", "{6FEABC43-6A6E-421E-B90C-FAE883F48A50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC314808-5293-446B-B125-4B57A1DC9BB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC314808-5293-446B-B125-4B57A1DC9BB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC314808-5293-446B-B125-4B57A1DC9BB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC314808-5293-446B-B125-4B57A1DC9BB1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {302E6181-4B63-4412-B366-AEF42F5572C5}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Straitjacket.VirtualKey\VirtualKey\VirtualKey.projitems*{6feabc43-6a6e-421e-b90c-fae883f48a50}*SharedItemsImports = 13
+		Straitjacket.VirtualKey\VirtualKey\VirtualKey.projitems*{cc314808-5293-446b-b125-4b57a1dc9bb1}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal
