@@ -2,7 +2,10 @@
 using HarmonyLib;
 using Straitjacket;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using UWE;
 
@@ -18,87 +21,108 @@ internal static class LoadingScreenPatch
     private static Stopwatch stopwatch;
     private static bool benchmarking;
 
-    [HarmonyPatch(typeof(uGUI_MainMenu), nameof(uGUI_MainMenu.LoadGameAsync))]
-    [HarmonyPatch(typeof(uGUI_MainMenu), nameof(uGUI_MainMenu.StartNewGame))]
-    [HarmonyPrefix]
-    public static void LoadPrefix(uGUI_MainMenu __instance)
+    internal static class Start
     {
-        if (__instance.isStartingNewGame || (stopwatch is Stopwatch sw && sw.IsRunning))
-        {
-            return;
-        }
+        static IEnumerable<MethodBase> TargetMethods() => new[] {
+            AccessTools.Method(typeof(uGUI_MainMenu), nameof(uGUI_MainMenu.StartNewGame)),
+            AccessTools.Method(typeof(uGUI_MainMenu), nameof(uGUI_MainMenu.LoadGameAsync)),
+            AccessTools.FirstMethod(typeof(WaitScreen), (info) => info.Name == "Show")
+            }
+        .Where(info => info is not null);
 
-        benchmarking = VirtualKey.GetKey(KeyCode.LeftControl);
-        if (benchmarking)
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static void Patch()
         {
-            Logger.LogMessage("Running benchmark without boosts for comparison, starting timer...");
-        }
-        else
-        {
-            Logger.LogInfo("Boosting loading times...");
-            frameRate = Application.targetFrameRate;
-            Application.targetFrameRate = -1;
-
-            vSyncCount = QualitySettings.vSyncCount;
-            QualitySettings.vSyncCount = 0;
-        }
-        stopwatch = Stopwatch.StartNew();
-    }
-
-    private static Coroutine end;
-
-    [HarmonyPatch(typeof(WaitScreen), nameof(WaitScreen.ReportStageDurations))]
-    [HarmonyPrefix]
-    public static void ReportStageDurationsPrefix()
-    {
-        if (stopwatch is not null)
-        {
-            if (end is Coroutine)
+            if (stopwatch?.IsRunning ?? false)
             {
-                CoroutineHost.StopCoroutine(end);
+                return;
             }
 
-            end = CoroutineHost.StartCoroutine(End());
+            benchmarking = VirtualKey.GetKey(KeyCode.LeftControl);
+            if (benchmarking)
+            {
+                Logger.LogMessage("Running benchmark without boosts for comparison, starting timer...");
+            }
+            else
+            {
+                Logger.LogInfo("Boosting loading times...");
+                frameRate = Application.targetFrameRate;
+                Application.targetFrameRate = -1;
+
+                vSyncCount = QualitySettings.vSyncCount;
+                QualitySettings.vSyncCount = 0;
+            }
+            stopwatch = Stopwatch.StartNew();
         }
     }
 
-    private static IEnumerator End()
+    internal static class Finish
     {
-        int frame = Time.frameCount;
-        yield return new WaitUntil(() => Time.frameCount > frame);
-        yield return new WaitWhile(() => WaitScreen.main.isWaiting);
+        static MethodBase TargetMethod() => AccessTools.FirstMethod(
+            typeof(WaitScreen),
+            (info) => info.Name == nameof(WaitScreen.ReportStageDurations) || info.Name == "Show");
 
-        stopwatch.Stop();
-        if (benchmarking)
-        {
-            benchmark = stopwatch.Elapsed.TotalSeconds;
-            Logger.LogMessage($"Benchmark complete, loading completed in {benchmark:N2}s.");
-        }
-        else
-        {
-            Logger.LogInfo($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
-                    $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
-            Application.targetFrameRate = frameRate;
-            QualitySettings.vSyncCount = vSyncCount;
+        private static Coroutine end;
 
-            if (benchmark >= 0)
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static void Patch()
+        {
+            if (stopwatch is not null)
             {
-                Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, vs. unboosted benchmark of {benchmark:N2}s.");
-                if (stopwatch.Elapsed.TotalSeconds < benchmark)
+                if (end is not null)
                 {
-                    Logger.LogMessage($"Improvement of {benchmark - stopwatch.Elapsed.TotalSeconds:N2}s.");
+                    (CoroutineHost.Initialize() as MonoBehaviour).StopCoroutine(end);
                 }
-                else if (stopwatch.Elapsed.TotalSeconds > benchmark)
-                {
-                    Logger.LogMessage($"Degradation of {stopwatch.Elapsed.TotalSeconds - benchmark:N2}s.");
-                }
-                else
-                {
-                    Logger.LogMessage("No performance difference recorded.");
-                }
+
+                end = (CoroutineHost.Initialize() as MonoBehaviour).StartCoroutine(End());
             }
         }
-        stopwatch = null;
-        end = null;
+
+        static Traverse<bool> IsWaitingOrShown => Traverse.Create(WaitScreen.main).Field(nameof(WaitScreen.isWaiting)) switch
+        {
+            Traverse t when t.FieldExists() => new(t),
+            _ => Traverse.Create(WaitScreen.main).Field<bool>("isShown")
+        };
+
+        private static IEnumerator End()
+        {
+            yield return null;
+            yield return new WaitWhile(() => IsWaitingOrShown.Value);
+
+            stopwatch.Stop();
+            if (benchmarking)
+            {
+                benchmark = stopwatch.Elapsed.TotalSeconds;
+                Logger.LogMessage($"Benchmark complete, loading completed in {benchmark:N2}s.");
+            }
+            else
+            {
+                Logger.LogInfo($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, " +
+                        $"resetting FPS cap and VSync per user preferences ({frameRate}, {vSyncCount})");
+                Application.targetFrameRate = frameRate;
+                QualitySettings.vSyncCount = vSyncCount;
+
+                if (benchmark >= 0)
+                {
+                    Logger.LogMessage($"Loading completed in {stopwatch.Elapsed.TotalSeconds:N2}s, vs. unboosted benchmark of {benchmark:N2}s.");
+                    if (stopwatch.Elapsed.TotalSeconds < benchmark)
+                    {
+                        Logger.LogMessage($"Improvement of {benchmark - stopwatch.Elapsed.TotalSeconds:N2}s.");
+                    }
+                    else if (stopwatch.Elapsed.TotalSeconds > benchmark)
+                    {
+                        Logger.LogMessage($"Degradation of {stopwatch.Elapsed.TotalSeconds - benchmark:N2}s.");
+                    }
+                    else
+                    {
+                        Logger.LogMessage("No performance difference recorded.");
+                    }
+                }
+            }
+            stopwatch = null;
+            end = null;
+        }
     }
 }

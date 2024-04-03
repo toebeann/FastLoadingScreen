@@ -31,15 +31,16 @@ public class FastLoadingScreen : BaseUnityPlugin
         ApplyHarmonyPatches();
 
         stopwatch.Stop();
-        Logger.LogInfo($"Initialised in {stopwatch.ElapsedMilliseconds}");
+        Logger.LogInfo($"Initialised in {stopwatch.ElapsedMilliseconds}ms.");
     }
 
     private void ApplyHarmonyPatches()
     {
         var stopwatch = Stopwatch.StartNew();
 
-        var harmony = new Harmony("Fast Loading Screen");
-        harmony.PatchAll(typeof(LoadingScreenPatch));
+        var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+        harmony.PatchAll(typeof(LoadingScreenPatch.Start));
+        harmony.PatchAll(typeof(LoadingScreenPatch.Finish));
 
         stopwatch.Stop();
         Logger.LogInfo($"Harmony patches applied in {stopwatch.ElapsedMilliseconds}ms.");
