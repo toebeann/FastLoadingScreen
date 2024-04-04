@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>Tobey.FastLoadingScreen</AssemblyName>
-    <Description>My first plugin</Description>
+    <Description>Fast Loading Screen</Description>
     <Version>2.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
